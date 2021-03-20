@@ -3,7 +3,6 @@ class Message < ApplicationRecord
   attribute :uuid, MySQLBinUUID::Type.new
   self.primary_key = "uuid"
   attribute :counter, default: 0
-  validates :uuid, presence: true
   validates :counter, presence: true, numericality: { only_integer: true }
   validates :comment, presence: true, format: { without: /\A<\w*>.*<\/\w*>\z/, message: "no HTML-tags allowed"}
 end

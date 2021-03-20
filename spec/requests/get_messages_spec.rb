@@ -19,15 +19,20 @@ RSpec.describe 'messages', type: :request do
     end
 
     it 'should return proper json' do
-      create_list :message, 2
+      messages = build :message, counter: 0
       get '/api/v1/messages'
       Message.all.each_with_index do |message, index|
-        expect(json_data[index]['attributes']).to eq({
+        expect(Json.parse(response.body)).to eq({
           "uuid" => message.uuid,
           "comment" => message.comment,
           "counter" => article.counter.to_i
         })
       end
+    end
+
+    it 'can contain characters coming from different languages' do
+      post "/api/v1/messages", :params => { message: { comment: "ეს არის ჩემი შესანიშნავი გზავნილი"} }
+      expect(JSON.parse(response.body)["comment"]).to eq("ეს არის ჩემი შესანიშნავი გზავნილი")
     end
   end
 end
