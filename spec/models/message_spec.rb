@@ -10,12 +10,6 @@ RSpec.describe Message, type: :model do
       expect(another_message).to be_valid
     end
 
-    it 'should validate the presence of uuid' do
-      message = build :message, uuid: ''
-      expect(message).not_to be_valid
-      expect(message.errors.messages[:uuid]).to include ("can't be blank")
-    end
-
     it 'should validate the presence of counter' do
       message = build :message, counter: nil
       expect(message).not_to be_valid
