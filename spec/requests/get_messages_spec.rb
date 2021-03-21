@@ -19,7 +19,7 @@ RSpec.describe 'messages', type: :request do
     end
 
     it 'should return proper json' do
-      messages = build :message, counter: 0
+      messages = build :message
       get '/api/v1/messages'
       Message.all.each_with_index do |message, index|
         expect(Json.parse(response.body)).to eq({
@@ -29,12 +29,44 @@ RSpec.describe 'messages', type: :request do
         })
       end
     end
-
     it 'can contain characters coming from different languages' do
-      post "/api/v1/messages", :params => { message: { comment: "ეს არის ჩემი შესანიშნავი გზავნილი"} }
+      post "/api/v1/messages", params: { message: { comment: "ეს არის ჩემი შესანიშნავი გზავნილი"} }
       expect(JSON.parse(response.body)["comment"]).to eq("ეს არის ჩემი შესანიშნავი გზავნილი")
+    end
+
+    it "it does not support the usage of html tags" do
+      html_tag = build(:message, comment: '<a href="https://peterhansonmusic.com">Peter Hanson</a>')
+      html_tag.save
+      expect { raise "no HTML-tags allowed" }.to raise_error(RuntimeError)
     end
   end
 end
 
+# describe User do
 
+#   describe '#email' do
+
+#     it 'validates presence' do
+#       record = User.new
+#       record.email = '' # invalid state
+#       record.validate
+#       expect(record.errors[:email]).to include("can't be blank") # check for presence of error
+
+#       record.email = 'foo@bar.com' # valid state
+#       record.validate
+#       expect(record.errors[:email]).to_not include("can't be blank") # check for absence of error
+#     end
+
+#   end
+
+# end
+
+
+
+# ○ it has a non-guessable identifier (UUID v4),
+# ○ it can contain characters coming from different languages,
+# ○ it does not support the usage of html tags,
+# ○ it has a maximum number of chars (255 characters),
+# ○ e-mail(s) and http link(s) can be part of the message,
+# ○ it has an internal counter of how many times the message was
+# retrieved (unsigned number)
