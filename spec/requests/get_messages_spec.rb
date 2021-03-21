@@ -12,6 +12,7 @@ require 'rails_helper'
 
 RSpec.describe 'messages', type: :request do
   describe 'GET /index' do
+
     it 'returns HTTP success' do
       get '/api/v1/messages'
       expect(response).to have_http_status(:success)
@@ -19,7 +20,6 @@ RSpec.describe 'messages', type: :request do
     end
 
     it 'should return proper json' do
-      messages = build :message
       get '/api/v1/messages'
       Message.all.each_with_index do |message, index|
         expect(Json.parse(response.body)).to eq({
@@ -29,6 +29,7 @@ RSpec.describe 'messages', type: :request do
         })
       end
     end
+
     it 'can contain characters coming from different languages' do
       post "/api/v1/messages", params: { message: { comment: "ეს არის ჩემი შესანიშნავი გზავნილი"} }
       expect(JSON.parse(response.body)["comment"]).to eq("ეს არის ჩემი შესანიშნავი გზავნილი")
@@ -39,27 +40,11 @@ RSpec.describe 'messages', type: :request do
       html_tag.save
       expect { raise "no HTML-tags allowed" }.to raise_error(RuntimeError)
     end
+
+
   end
 end
 
-# describe User do
-
-#   describe '#email' do
-
-#     it 'validates presence' do
-#       record = User.new
-#       record.email = '' # invalid state
-#       record.validate
-#       expect(record.errors[:email]).to include("can't be blank") # check for presence of error
-
-#       record.email = 'foo@bar.com' # valid state
-#       record.validate
-#       expect(record.errors[:email]).to_not include("can't be blank") # check for absence of error
-#     end
-
-#   end
-
-# end
 
 
 

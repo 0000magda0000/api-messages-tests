@@ -21,6 +21,11 @@ RSpec.describe Message, type: :model do
       expect(message).not_to be_valid
       expect(message.errors.messages[:comment]).to include ("can't be blank")
     end
+
+    it "comment has a maximum number of chars (255 characters)" do
+      build :message, comment: "I am the message you have been waiting for I will show you how to test. You always have to test. Always, always test. You will get it, and you will do well, better than you are doing now, if you test right. Girl is now called bot. I am now called woman. That's it."
+      expect{ raise "Data too long for column 'comment' at row 1" }.to raise_error(RuntimeError)
+    end
   end
 end
 

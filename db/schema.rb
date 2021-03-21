@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_03_07_091955) do
 
   create_table "messages", primary_key: "uuid", id: :binary, limit: 16, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "comment"
+    t.string "comment"
     t.integer "counter", default: 0, unsigned: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
