@@ -40,8 +40,6 @@ RSpec.describe 'messages', type: :request do
       html_tag.save
       expect { raise "no HTML-tags allowed" }.to raise_error(RuntimeError)
     end
-
-
   end
 end
 
